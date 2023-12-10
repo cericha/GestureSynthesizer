@@ -61,41 +61,77 @@ public:
     {
         setAudioChannels (0, 2);
         
-        // Define frequency Knob
-        frequencyKnob.setRange (0.0, 1.0);
-        frequencyKnob.setSliderStyle (juce::Slider::RotaryVerticalDrag);
-        frequencyKnob.setTextBoxStyle (juce::Slider::TextBoxBelow, true, 150, 25);
-        frequencyKnob.setBounds (10, 50, 180, 180);
-        frequencyKnob.setInterceptsMouseClicks (false, false);
-        addAndMakeVisible (frequencyKnob);
-        addAndMakeVisible(frequencyLabel);
-        frequencyLabel.setJustificationType (juce::Justification::centred);
-        frequencyLabel.setText ("Frequency", juce::dontSendNotification);
-        frequencyLabel.attachToComponent (&frequencyKnob, false);
+        // Define frequency Knob Voice 1
+        frequencyKnobVoice1.setRange (0.0, 1.0);
+        frequencyKnobVoice1.setSliderStyle (juce::Slider::RotaryVerticalDrag);
+        frequencyKnobVoice1.setTextBoxStyle (juce::Slider::TextBoxBelow, true, 150, 25);
+        frequencyKnobVoice1.setBounds (10, 40, 180, 180);
+        frequencyKnobVoice1.setInterceptsMouseClicks (false, false);
+        addAndMakeVisible (frequencyKnobVoice1);
+        addAndMakeVisible(frequencyLabelVoice1);
+        frequencyLabelVoice1.setJustificationType (juce::Justification::centred);
+        frequencyLabelVoice1.setText ("Frequency V1", juce::dontSendNotification);
+        frequencyLabelVoice1.attachToComponent (&frequencyKnobVoice1, false);
 
-        // Define Amplitude Knob
-        amplitudeKnob.setRange (0.0, 1.0);
-        amplitudeKnob.setSliderStyle (juce::Slider::RotaryVerticalDrag);
-        amplitudeKnob.setTextBoxStyle (juce::Slider::TextBoxBelow, true, 150, 25);
-        amplitudeKnob.setBounds (190, 50, 180, 180);
-        amplitudeKnob.setInterceptsMouseClicks (false, false);
-        addAndMakeVisible (amplitudeKnob);
-        addAndMakeVisible(amplitudeLabel);
-        amplitudeLabel.setJustificationType (juce::Justification::centred);
-        amplitudeLabel.setText ("Amplitude", juce::dontSendNotification);
-        amplitudeLabel.attachToComponent (&amplitudeKnob, false);
+        // Define Amplitude Knob Voice 1
+        amplitudeKnobVoice1.setRange (0.0, 1.0);
+        amplitudeKnobVoice1.setSliderStyle (juce::Slider::RotaryVerticalDrag);
+        amplitudeKnobVoice1.setTextBoxStyle (juce::Slider::TextBoxBelow, true, 150, 25);
+        amplitudeKnobVoice1.setBounds (190, 40, 180, 180);
+        amplitudeKnobVoice1.setInterceptsMouseClicks (false, false);
+        addAndMakeVisible (amplitudeKnobVoice1);
+        addAndMakeVisible(amplitudeLabelVoice1);
+        amplitudeLabelVoice1.setJustificationType (juce::Justification::centred);
+        amplitudeLabelVoice1.setText ("Amplitude V1", juce::dontSendNotification);
+        amplitudeLabelVoice1.attachToComponent (&amplitudeKnobVoice1, false);
         
-        // Define Timbre Knob
-        timbreKnob.setRange (0.0, 1.0);
-        timbreKnob.setSliderStyle (juce::Slider::RotaryVerticalDrag);
-        timbreKnob.setTextBoxStyle (juce::Slider::TextBoxBelow, true, 150, 25);
-        timbreKnob.setBounds (380, 50, 180, 180);
-        timbreKnob.setInterceptsMouseClicks (false, false);
-        addAndMakeVisible (timbreKnob);
-        addAndMakeVisible(timbreLabel);
-        timbreLabel.setJustificationType (juce::Justification::centred);
-        timbreLabel.setText ("Timbre", juce::dontSendNotification);
-        timbreLabel.attachToComponent (&timbreKnob, false);
+        // Define Timbre Knob Voice 1
+        timbreKnobVoice1.setRange (0.0, 1.0);
+        timbreKnobVoice1.setSliderStyle (juce::Slider::RotaryVerticalDrag);
+        timbreKnobVoice1.setTextBoxStyle (juce::Slider::TextBoxBelow, true, 150, 25);
+        timbreKnobVoice1.setBounds (380, 40, 180, 180);
+        timbreKnobVoice1.setInterceptsMouseClicks (false, false);
+        addAndMakeVisible (timbreKnobVoice1);
+        addAndMakeVisible(timbreLabelVoice1);
+        timbreLabelVoice1.setJustificationType (juce::Justification::centred);
+        timbreLabelVoice1.setText ("Timbre V1", juce::dontSendNotification);
+        timbreLabelVoice1.attachToComponent (&timbreKnobVoice1, false);
+        
+        // Define frequency Knob Voice 2
+        frequencyKnobVoice2.setRange (0.0, 1.0);
+        frequencyKnobVoice2.setSliderStyle (juce::Slider::RotaryVerticalDrag);
+        frequencyKnobVoice2.setTextBoxStyle (juce::Slider::TextBoxBelow, true, 150, 25);
+        frequencyKnobVoice2.setBounds (10, 270, 180, 180);
+        frequencyKnobVoice2.setInterceptsMouseClicks (false, false);
+        addAndMakeVisible (frequencyKnobVoice2);
+        addAndMakeVisible(frequencyLabelVoice2);
+        frequencyLabelVoice2.setJustificationType (juce::Justification::centred);
+        frequencyLabelVoice2.setText ("Frequency V2", juce::dontSendNotification);
+        frequencyLabelVoice2.attachToComponent (&frequencyKnobVoice2, false);
+
+        // Define Amplitude Knob Voice 2
+        amplitudeKnobVoice2.setRange (0.0, 1.0);
+        amplitudeKnobVoice2.setSliderStyle (juce::Slider::RotaryVerticalDrag);
+        amplitudeKnobVoice2.setTextBoxStyle (juce::Slider::TextBoxBelow, true, 150, 25);
+        amplitudeKnobVoice2.setBounds (190, 270, 180, 180);
+        amplitudeKnobVoice2.setInterceptsMouseClicks (false, false);
+        addAndMakeVisible (amplitudeKnobVoice2);
+        addAndMakeVisible(amplitudeLabelVoice2);
+        amplitudeLabelVoice2.setJustificationType (juce::Justification::centred);
+        amplitudeLabelVoice2.setText ("Amplitude V2", juce::dontSendNotification);
+        amplitudeLabelVoice2.attachToComponent (&amplitudeKnobVoice2, false);
+        
+        // Define Timbre Knob Voice 2
+        timbreKnobVoice2.setRange (0.0, 1.0);
+        timbreKnobVoice2.setSliderStyle (juce::Slider::RotaryVerticalDrag);
+        timbreKnobVoice2.setTextBoxStyle (juce::Slider::TextBoxBelow, true, 150, 25);
+        timbreKnobVoice2.setBounds (380, 270, 180, 180);
+        timbreKnobVoice2.setInterceptsMouseClicks (false, false);
+        addAndMakeVisible (timbreKnobVoice2);
+        addAndMakeVisible(timbreLabelVoice2);
+        timbreLabelVoice2.setJustificationType (juce::Justification::centred);
+        timbreLabelVoice2.setText ("Timbre V2", juce::dontSendNotification);
+        timbreLabelVoice2.attachToComponent (&timbreKnobVoice2, false);
 
         // Specify UDP port for OSC messages
         if (! connect (9001))
@@ -105,7 +141,7 @@ public:
         addListener (this, "/juce/gestureData");
         
         // Window Size
-        setSize (600, 250);
+        setSize (600, 485);
     }
 
     ~GestureSynthesizer() override
@@ -124,25 +160,41 @@ public:
         In this example the buffer is filled with a sine wave whose frequency and
         amplitude are controlled by the mouse position.
      */
-    void getNextAudioBlock (const AudioSourceChannelInfo& bufferToFill) override
+    void getNextAudioBlock(const AudioSourceChannelInfo& bufferToFill) override
     {
         bufferToFill.clearActiveBufferRegion();
-        auto originalPhase = phase;
-        float curr_amplitude = (float) amplitudeKnob.getValue() / 10.0;
-        float magnitude = (float) timbreKnob.getValue() / 10.0;
-        
+
+        // Voice 1 parameters
+        auto originalPhaseVoice1 = phaseVoice1;
+        float currAmplitudeVoice1 = (float)amplitudeKnobVoice1.getValue() / 10.0;
+        float magnitudeVoice1 = (float)timbreKnobVoice1.getValue() / 10.0;
+
+        // Voice 2 parameters
+        auto originalPhaseVoice2 = phaseVoice2;
+        float currAmplitudeVoice2 = (float)amplitudeKnobVoice2.getValue() / 10.0;
+        float magnitudeVoice2 = (float)timbreKnobVoice2.getValue() / 10.0;
+
         for (auto chan = 0; chan < bufferToFill.buffer->getNumChannels(); ++chan)
         {
-            phase = originalPhase;
+            phaseVoice1 = originalPhaseVoice1;
+            phaseVoice2 = originalPhaseVoice2;
             auto* channelData = bufferToFill.buffer->getWritePointer(chan, bufferToFill.startSample);
-            
-            
+
+            float phaseOffset = 0.1f; // To avoid possible wave cancellation
             for (auto i = 0; i < bufferToFill.numSamples; ++i)
             {
-                // Define synthesizer
-                channelData[i] = (curr_amplitude) * (((1.0 - magnitude) * std::sin(phase)) + ((std::sin(phase) >= 0) ? magnitude : -magnitude));
-                
-                phase = std::fmod(phase + phaseDelta, MathConstants<float>::twoPi);
+                // Voice 1 Synthesizer
+                auto voice1Sin = std::sin(phaseVoice1 + phaseOffset);
+                auto waveVoice1 = (currAmplitudeVoice1) * (((1.0 - magnitudeVoice1) * voice1Sin) + ((voice1Sin >= 0) ? magnitudeVoice1 : -magnitudeVoice1));
+                phaseVoice1 = std::fmod(phaseVoice1 + phaseDeltaVoice1, MathConstants<float>::twoPi);
+
+                // Voice 2 Synthesizer
+                auto voice2Sin = std::sin(phaseVoice2);
+                auto waveVoice2 = (currAmplitudeVoice2) * (((1.0 - magnitudeVoice2) * voice2Sin) + ((voice2Sin >= 0) ? magnitudeVoice2 : -magnitudeVoice2));
+                phaseVoice2 = std::fmod(phaseVoice2 + phaseDeltaVoice2, MathConstants<float>::twoPi);
+
+                // Additive synthesis: combine the two voices
+                channelData[i] = waveVoice1 + waveVoice2;
             }
         }
     }
@@ -207,11 +259,17 @@ public:
 
 private:
     //==============================================================================
-    float phase       = 0.0f;
-    float phaseDelta  = 0.0f;
-    float frequency   = 5000.0f;
-    float amplitude   = 0.2f;
-    float octave_multiplier = 4.0f;
+    float phaseVoice1       = 0.0f;
+    float phaseDeltaVoice1  = 0.0f;
+    float frequencyVoice1   = 5000.0f;
+    float amplitudeVoice1   = 0.2f;
+    float octaveMultiplierVoice1 = 4.0f;
+    
+    float phaseVoice2       = 0.0f;
+    float phaseDeltaVoice2  = 0.0f;
+    float frequencyVoice2   = 5000.0f;
+    float amplitudeVoice2   = 0.2f;
+    float octaveMultiplierVoice2 = 4.0f;
 //    float octave_multiplier_min = 1.0f;
 //    float octave_multiplier_max = 8.0f;
 
@@ -219,19 +277,41 @@ private:
     int expectedSamplesPerBlock = 0;
     Point<float> lastMousePosition;
 
-    void oscMessageReceived (const juce::OSCMessage& message) override
+    void oscMessageReceived(const juce::OSCMessage& message) override
     {
-        if (message.size() == 3 && message[0].isFloat32() && message[1].isFloat32() && message[2].isFloat32()) {
-            frequencyKnob.setValue (juce::jlimit (0.0f, 10.0f, message[0].getFloat32()));
-            amplitudeKnob.setValue (juce::jlimit (0.0f, 10.0f, message[1].getFloat32()));
-            timbreKnob.setValue (juce::jlimit (0.0f, 10.0f, message[2].getFloat32()));
+        // Expect [frequency, amplitude, timbre] for each voice, so 6 total data points
+        if (message.size() == 6 &&
+            message[0].isFloat32() && message[1].isFloat32() && message[2].isFloat32() &&
+            message[3].isFloat32() && message[4].isFloat32() && message[5].isFloat32())
+        {
+            // Voice 1 Set Values
+            float magnitude1 = 1.0 - message[1].getFloat32();
+            frequencyKnobVoice1.setValue(juce::jlimit(0.0f, 10.0f, message[0].getFloat32()));
+            amplitudeKnobVoice1.setValue(juce::jlimit(0.0f, 10.0f, magnitude1));
+            timbreKnobVoice1.setValue(juce::jlimit(0.0f, 10.0f, message[2].getFloat32()));
+
+            // Voice 2 Set Values
+            float magnitude2 = 1.0 - message[4].getFloat32();
+            frequencyKnobVoice2.setValue(juce::jlimit(0.0f, 10.0f, message[3].getFloat32()));
+            amplitudeKnobVoice2.setValue(juce::jlimit(0.0f, 10.0f, magnitude2));
+            timbreKnobVoice2.setValue(juce::jlimit(0.0f, 10.0f, message[5].getFloat32()));
+
             int regions = 8;
-            double region_area = 1.0f / regions;
-            // Define A Major scale
             float frequencies[]{440.00, 493.88, 554.37, 587.33, 659.25, 739.99, 830.61, 880.00};
-            int frequency_index = std::floor(frequencyKnob.getValue()/region_area);
-            frequency = (octave_multiplier / 4.0) * frequencies[7 - frequency_index];
-            phaseDelta = (float) (MathConstants<double>::twoPi * frequency / sampleRate);
+
+            // Get frequency index Voice 1 and calculate phase delta
+            int frequency_index1 = static_cast<int>(std::round(frequencyKnobVoice1.getValue() * (regions - 1)));
+            frequency_index1 = std::max(0, std::min(frequency_index1, regions - 1));
+
+            frequencyVoice1 = (octaveMultiplierVoice1 / 4.0) * frequencies[frequency_index1];
+            phaseDeltaVoice1 = (float)(MathConstants<double>::twoPi * frequencyVoice1 / sampleRate);
+
+            // Get frequency index Voice 2 and calculate phase delta
+            int frequency_index2 = static_cast<int>(std::round(frequencyKnobVoice2.getValue() * (regions - 1)));
+            frequency_index2 = std::max(0, std::min(frequency_index2, regions - 1));
+            
+            frequencyVoice2 = (octaveMultiplierVoice2 / 4.0) * frequencies[frequency_index2];
+            phaseDeltaVoice2 = (float)(MathConstants<double>::twoPi * frequencyVoice2 / sampleRate);
         }
     }
 
@@ -242,11 +322,21 @@ private:
                                                 messageText,
                                                 "OK");
     }
-    juce::Slider frequencyKnob;
-    juce::Slider amplitudeKnob;
-    juce::Slider timbreKnob;
-    juce::Label frequencyLabel;
-    juce::Label amplitudeLabel;
-    juce::Label timbreLabel;
+    
+    // voice 1
+    juce::Slider frequencyKnobVoice1;
+    juce::Slider amplitudeKnobVoice1;
+    juce::Slider timbreKnobVoice1;
+    juce::Label frequencyLabelVoice1;
+    juce::Label amplitudeLabelVoice1;
+    juce::Label timbreLabelVoice1;
+    
+    // voice2
+    juce::Slider frequencyKnobVoice2;
+    juce::Slider amplitudeKnobVoice2;
+    juce::Slider timbreKnobVoice2;
+    juce::Label frequencyLabelVoice2;
+    juce::Label amplitudeLabelVoice2;
+    juce::Label timbreLabelVoice2;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GestureSynthesizer)
 };
