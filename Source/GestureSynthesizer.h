@@ -263,13 +263,13 @@ private:
     float phaseDeltaVoice1  = 0.0f;
     float frequencyVoice1   = 5000.0f;
     float amplitudeVoice1   = 0.2f;
-    float octaveMultiplierVoice1 = 4.0f;
+    float octaveMultiplierVoice1 = 1.0f;
     
     float phaseVoice2       = 0.0f;
     float phaseDeltaVoice2  = 0.0f;
     float frequencyVoice2   = 5000.0f;
     float amplitudeVoice2   = 0.2f;
-    float octaveMultiplierVoice2 = 4.0f;
+    float octaveMultiplierVoice2 = 1.0f;
 //    float octave_multiplier_min = 1.0f;
 //    float octave_multiplier_max = 8.0f;
 
@@ -279,23 +279,31 @@ private:
 
     void oscMessageReceived(const juce::OSCMessage& message) override
     {
-        // Expect [frequency, amplitude, timbre] for each voice, so 6 total data points
-        if (message.size() == 6 &&
-            message[0].isFloat32() && message[1].isFloat32() && message[2].isFloat32() &&
-            message[3].isFloat32() && message[4].isFloat32() && message[5].isFloat32())
+        if (message.size() == 8 &&
+            message[0].isInt32() && message[1].isInt32() &&
+            message[2].isFloat32() && message[3].isFloat32() && message[4].isFloat32() &&
+            message[5].isFloat32() && message[6].isFloat32() && message[7].isFloat32())
         {
+            octaveMultiplierVoice1 = static_cast<float>(message[0].getInt32());
+            octaveMultiplierVoice2 = static_cast<float>(message[1].getInt32());
+            
+            // Error if octaveMultiplier is 0, default to 1.0
+            if (octaveMultiplierVoice1 < 1.0)
+                octaveMultiplierVoice1 = 1.0f;
+            if (octaveMultiplierVoice2 < 1.0)
+                octaveMultiplierVoice2 = 1.0f;
+            
             // Voice 1 Set Values
-            float magnitude1 = 1.0 - message[1].getFloat32();
-            frequencyKnobVoice1.setValue(juce::jlimit(0.0f, 10.0f, message[0].getFloat32()));
+            float magnitude1 = 1.0 - message[3].getFloat32();
+            frequencyKnobVoice1.setValue(juce::jlimit(0.0f, 10.0f, message[2].getFloat32()));
             amplitudeKnobVoice1.setValue(juce::jlimit(0.0f, 10.0f, magnitude1));
-            timbreKnobVoice1.setValue(juce::jlimit(0.0f, 10.0f, message[2].getFloat32()));
+            timbreKnobVoice1.setValue(juce::jlimit(0.0f, 10.0f, message[4].getFloat32()));
 
             // Voice 2 Set Values
-            float magnitude2 = 1.0 - message[4].getFloat32();
-            frequencyKnobVoice2.setValue(juce::jlimit(0.0f, 10.0f, message[3].getFloat32()));
+            float magnitude2 = 1.0 - message[6].getFloat32();
+            frequencyKnobVoice2.setValue(juce::jlimit(0.0f, 10.0f, message[5].getFloat32()));
             amplitudeKnobVoice2.setValue(juce::jlimit(0.0f, 10.0f, magnitude2));
-            timbreKnobVoice2.setValue(juce::jlimit(0.0f, 10.0f, message[5].getFloat32()));
-
+            timbreKnobVoice2.setValue(juce::jlimit(0.0f, 10.0f, message[7].getFloat32()));
             int regions = 8;
             float frequencies[]{440.00, 493.88, 554.37, 587.33, 659.25, 739.99, 830.61, 880.00};
 
