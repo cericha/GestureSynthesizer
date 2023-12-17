@@ -1,7 +1,7 @@
 // Project: Gesture based audio synthesizer
 // Class: Computer Vision
 // Professor: Iannos Stamos
-// Group Members: Fourcan Abdullah, Anthony F Williams, Jeffry Hsu, Charles Richards
+// Group Members: Fourcan Abdullah, Anthony F Williams, Jeffrey Hsu, Charles Richards
 // Date: December 17th, 2023
 //
 // Juce based audio synthesizer that receives gesture data through OSC protocol.
