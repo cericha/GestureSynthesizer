@@ -1,8 +1,8 @@
-# Harmony In Motion Collaborative Gesture-Based Sounds
+# Harmony In Motion: Collaborative Gesture-Based Sounds
 
 Harmony In Motion is a gesture-controlled MIDI synthesizer with spectrogram that transforms hand movements captured by your computer webcam into musical expressions. Unlike traditional MIDI controllers, HarMo offers an intuitive and immersive musical experience by allowing users to control pitch, volume, and sound brightness through simple hand gestures.
 
-- [Harmony In Motion Collaborative Gesture-Based Sounds](#harmony-in-motion-collaborative-gesture-based-sounds)
+- [Harmony In Motion: Collaborative Gesture-Based Sounds](#harmony-in-motion-collaborative-gesture-based-sounds)
   - [Required Packages](#required-packages)
   - [Launching the Program](#launching-the-program)
     - [Compiling JUCE GestureSynthesizer](#compiling-juce-gesturesynthesizer)
@@ -55,7 +55,7 @@ After launch, the program is in Mode 1, which allows you to change the octave of
 - Volume by moving your hand vertically.
 - Timbre (sound brightness) by changing the distance between your pointer and index fingers.
 
-You can return to Mode 1 at any time by making an open palm.
+You can return to Mode 1 at any time by making an open palm. Gestures to switch modes and set octaves need to be held for 2 seconds for the system to register.
 
 ## Best Practices
 
