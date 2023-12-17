@@ -62,9 +62,9 @@ extras/Projucer/JUCECompileEngine.dylib
 **/cmake-build*
 
 .vscode
-/build
-/builds
-/JuceLibraryCode
+/GestureTracker/build
+/GestureTracker/builds
+/GestureTracker/JuceLibraryCode
 
 CMakeUserPresets.json
 .editorconfig
