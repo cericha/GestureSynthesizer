@@ -1,6 +1,6 @@
 # Harmony In Motion Collaborative Gesture-Based Sounds
 
-HarMo is a gesture-controlled MIDI synthesizer that transforms hand movements captured by your computer webcam into musical expressions. Unlike traditional MIDI controllers, HarMo offers an intuitive and immersive musical experience by allowing users to control pitch, volume, and sound brightness through simple hand gestures.
+Harmony In Motion is a gesture-controlled MIDI synthesizer with spectrogram that transforms hand movements captured by your computer webcam into musical expressions. Unlike traditional MIDI controllers, HarMo offers an intuitive and immersive musical experience by allowing users to control pitch, volume, and sound brightness through simple hand gestures.
 
 - [HarMo Collaborative Gesture-Based Sounds](#harmo-collaborative-gesture-based-sounds)
   - [Required Packages](#required-packages)
