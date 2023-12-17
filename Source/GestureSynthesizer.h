@@ -166,7 +166,7 @@ public:
         g.setOpacity (1.0f);
     }
 
-    // Helper function to initialzize knobs.
+    // Helper function to initialize knobs.
     // Creates knob, sets style to rotary, sizes knob, attaches a label, centeres text, and makes visible
     // Currently set such that knobs are not controllable by mouse, but only by OSC messages
     void initializeKnob(juce::Slider& knob, juce::Label& label, const String& labelText, int x, int y)
@@ -231,14 +231,10 @@ public:
         auto rightHandEdge = spectrogramImage.getWidth() - 1;
         auto imageHeight   = spectrogramImage.getHeight();
  
-        // first, shuffle our image leftwards by 1 pixel..
         spectrogramImage.moveImageSection (0, 0, 1, 0, rightHandEdge, imageHeight);
  
-        // then render our FFT data..
         forwardFFT.performFrequencyOnlyForwardTransform (fftData.data());
  
-        // find the range of values produced, so we can scale our rendering to
-        // show up the detail clearly
         auto maxLevel = juce::FloatVectorOperations::findMinAndMax (fftData.data(), fftSize / 2);
  
         for (auto y = 1; y < imageHeight; ++y)
@@ -247,7 +243,7 @@ public:
             auto fftDataIndex = (size_t) juce::jlimit (0, fftSize / 2, (int) (skewedProportionY * fftSize / 2));
             auto level = juce::jmap (fftData[fftDataIndex], 0.0f, juce::jmax (maxLevel.getEnd(), 1e-5f), 0.0f, 1.0f);
  
-            spectrogramImage.setPixelAt (rightHandEdge, y, juce::Colour::fromHSV (level, 1.0f, level, 1.0f)); // [5]
+            spectrogramImage.setPixelAt (rightHandEdge, y, juce::Colour::fromHSV (level, 1.0f, level, 1.0f));
         }
     }
 
