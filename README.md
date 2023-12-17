@@ -105,5 +105,4 @@ Addressing technical challenges, we had to establish a connection between our Py
 We noticed that the system sometimes confuses which hand is controlling which "voice" when two hands cross over or when hands leave the frame. We will implement a more advanced method of passing data from the gesture control system to the synthesizer in future versions to mitigate this problem.
 
 ## Additional Resources
-
-https://docs.google.com/presentation/d/11XkNUgmywfcmgPJH0sGzcOiOLrgdc08dL8EQ5NtDJRU/edit#slide=id.g1f87997393_0_782
+Project Presentation: https://docs.google.com/presentation/d/11XkNUgmywfcmgPJH0sGzcOiOLrgdc08dL8EQ5NtDJRU/edit#slide=id.g1f87997393_0_782
