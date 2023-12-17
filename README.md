@@ -2,12 +2,12 @@
 
 Harmony In Motion is a gesture-controlled MIDI synthesizer with spectrogram that transforms hand movements captured by your computer webcam into musical expressions. Unlike traditional MIDI controllers, HarMo offers an intuitive and immersive musical experience by allowing users to control pitch, volume, and sound brightness through simple hand gestures.
 
-- [HarMo Collaborative Gesture-Based Sounds](#harmo-collaborative-gesture-based-sounds)
+- [Harmony In Motion Collaborative Gesture-Based Sounds](#harmony-in-motion-collaborative-gesture-based-sounds)
   - [Required Packages](#required-packages)
   - [Launching the Program](#launching-the-program)
     - [Compiling JUCE GestureSynthesizer](#compiling-juce-gesturesynthesizer)
     - [Python Gesture Contol](#python-gesture-contol)
-  - [Gesture Controls](#gesture-controls)
+  - [Gestures](#gestures)
   - [Best Practices](#best-practices)
   - [How MediaPipe Works](#how-mediapipe-works)
     - [Overview](#overview)
@@ -16,6 +16,7 @@ Harmony In Motion is a gesture-controlled MIDI synthesizer with spectrogram that
     - [Architecture](#architecture)
     - [Implementation](#implementation)
   - [Challenges](#challenges)
+  - [Known Issues](#known-issues)
   - [Additional Resources](#additional-resources)
 
 ## Required Packages
@@ -44,7 +45,7 @@ The JUCE program must be compiled in Xcode for Mac and Visual Studio for Windows
 1. Launch the gesture control portion of the program with 'python hand2.py' in the terminal.
 2. Begin gesturing to play the instrument.
 
-## Gesture Controls
+## Gestures
 
 Position your hands in front of the webcam in an evenly, well lit environment.
 
@@ -96,6 +97,9 @@ The X and Y coordinates of the wrist landmark, relative to the input image size,
 We experimented with two different approaches to gesture recognition, initially exploring a system that required training a model to recognize various finger articulations and hand placements. However, it became apparent that obtaining sufficient data for adequate model training would be challenging. We opted for an alternative implementation, integrating Google's Mediapipe model for hand landmark detection. This approach provided us with x, y coordinates, which would supply data to our synthesizer.
 
 Addressing technical challenges, we had to establish a connection between our Python-based gesture recognition program and the C++ program responsible for sound generation. To overcome this, we identified an open-source audio library enabling the creation of a local server to transmit data to our synthesizer client. We also encountered issues with compiling programs on different computers due to differing IDE versions.
+
+## Known Issues
+We noticed that the system sometimes confuses which hand is controlling which "voice" when two hands cross over or when hands leave the frame. We will implement a more advanced method of passing data from the gesture control system to the synthesizer in future versions to mitigate this problem.
 
 ## Additional Resources
 
