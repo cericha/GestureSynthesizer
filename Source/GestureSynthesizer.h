@@ -1,21 +1,20 @@
-/*
-  ==============================================================================
-
-   This file is part of the JUCE examples.
-   Copyright (c) 2022 - Raw Material Software Limited
-
-   The code included in this file is provided under the terms of the ISC license
-   http://www.isc.org/downloads/software-support-policy/isc-license. Permission
-   To use, copy, modify, and/or distribute this software for any purpose with or
-   without fee is hereby granted provided that the above copyright notice and
-   this permission notice appear in all copies.
-
-   THE SOFTWARE IS PROVIDED "AS IS" WITHOUT ANY WARRANTY, AND ALL WARRANTIES,
-   WHETHER EXPRESSED OR IMPLIED, INCLUDING MERCHANTABILITY AND FITNESS FOR
-   PURPOSE, ARE DISCLAIMED.
-
-  ==============================================================================
-*/
+// Project: Gesture based audio synthesizer
+// Class: Computer Vision
+// Professor: Iannos Stamos
+// Group Members: Fourcan Abdullah, Anthony F Williams, Jeffry Hsu, Charles Richards
+// Date: December 17th, 2023
+//
+// Juce based audio synthesizer that receives gesture data through OSC protocol.
+// Implements two synthesizers which can vary in frequency, pitch, and timbre
+// OSC Data selects frequency, pitch, and timbre. Sound is generated continuously based on these parameters
+//
+// The following official JUCE tutorials and examples were used for and expanded upon for this implementation
+// of a synthesizer:
+// https://docs.juce.com/master/tutorial_osc_sender_receiver.html
+// https://docs.juce.com/master/tutorial_label.html
+// https://docs.juce.com/master/tutorial_slider_values.html
+// https://docs.juce.com/master/tutorial_simple_fft.html
+// https://docs.juce.com/master/tutorial_sine_synth.html
 
 /*******************************************************************************
  The block below describes the properties of this PIP. A PIP is a short snippet
@@ -49,99 +48,44 @@
 #pragma once
 
 
+
 //==============================================================================
-class GestureSynthesizer : public AudioAppComponent, private juce::OSCReceiver, private juce::OSCReceiver::ListenerWithOSCAddress<juce::OSCReceiver::MessageLoopCallback>
+class GestureSynthesizer : public AudioAppComponent, private juce::OSCReceiver, private juce::OSCReceiver::ListenerWithOSCAddress<juce::OSCReceiver::MessageLoopCallback>, private juce::Timer
 {
 public:
     //==============================================================================
+    
+    // Define GestyreSynthesizer Component. Builds UI interface, and initializes all values,
+    // and starts listning for OSC messages
     GestureSynthesizer()
-       #ifdef JUCE_DEMO_RUNNER
-        : AudioAppComponent (getSharedAudioDeviceManager (0, 2))
-       #endif
+        :
+         spectrogramImage (juce::Image::RGB, 580, 480, true),
+         forwardFFT (fftOrder)
+       
     {
+        setOpaque (true);
         setAudioChannels (0, 2);
+        startTimerHz (60);
         
-        // Define frequency Knob Voice 1
-        frequencyKnobVoice1.setRange (0.0, 1.0);
-        frequencyKnobVoice1.setSliderStyle (juce::Slider::RotaryVerticalDrag);
-        frequencyKnobVoice1.setTextBoxStyle (juce::Slider::TextBoxBelow, true, 150, 25);
-        frequencyKnobVoice1.setBounds (10, 40, 180, 180);
-        frequencyKnobVoice1.setInterceptsMouseClicks (false, false);
-        addAndMakeVisible (frequencyKnobVoice1);
-        addAndMakeVisible(frequencyLabelVoice1);
-        frequencyLabelVoice1.setJustificationType (juce::Justification::centred);
-        frequencyLabelVoice1.setText ("Frequency V1", juce::dontSendNotification);
-        frequencyLabelVoice1.attachToComponent (&frequencyKnobVoice1, false);
-
-        // Define Amplitude Knob Voice 1
-        amplitudeKnobVoice1.setRange (0.0, 1.0);
-        amplitudeKnobVoice1.setSliderStyle (juce::Slider::RotaryVerticalDrag);
-        amplitudeKnobVoice1.setTextBoxStyle (juce::Slider::TextBoxBelow, true, 150, 25);
-        amplitudeKnobVoice1.setBounds (190, 40, 180, 180);
-        amplitudeKnobVoice1.setInterceptsMouseClicks (false, false);
-        addAndMakeVisible (amplitudeKnobVoice1);
-        addAndMakeVisible(amplitudeLabelVoice1);
-        amplitudeLabelVoice1.setJustificationType (juce::Justification::centred);
-        amplitudeLabelVoice1.setText ("Amplitude V1", juce::dontSendNotification);
-        amplitudeLabelVoice1.attachToComponent (&amplitudeKnobVoice1, false);
+        // Voice 1 Knobs
+        initializeKnob(frequencyKnobVoice1, frequencyLabelVoice1, "Frequency V1", 10, 40);
+        initializeKnob(amplitudeKnobVoice1, amplitudeLabelVoice1, "Amplitude V1", 190, 40);
+        initializeKnob(timbreKnobVoice1, timbreLabelVoice1, "Timbre V1", 380, 40);
         
-        // Define Timbre Knob Voice 1
-        timbreKnobVoice1.setRange (0.0, 1.0);
-        timbreKnobVoice1.setSliderStyle (juce::Slider::RotaryVerticalDrag);
-        timbreKnobVoice1.setTextBoxStyle (juce::Slider::TextBoxBelow, true, 150, 25);
-        timbreKnobVoice1.setBounds (380, 40, 180, 180);
-        timbreKnobVoice1.setInterceptsMouseClicks (false, false);
-        addAndMakeVisible (timbreKnobVoice1);
-        addAndMakeVisible(timbreLabelVoice1);
-        timbreLabelVoice1.setJustificationType (juce::Justification::centred);
-        timbreLabelVoice1.setText ("Timbre V1", juce::dontSendNotification);
-        timbreLabelVoice1.attachToComponent (&timbreKnobVoice1, false);
-        
-        // Define frequency Knob Voice 2
-        frequencyKnobVoice2.setRange (0.0, 1.0);
-        frequencyKnobVoice2.setSliderStyle (juce::Slider::RotaryVerticalDrag);
-        frequencyKnobVoice2.setTextBoxStyle (juce::Slider::TextBoxBelow, true, 150, 25);
-        frequencyKnobVoice2.setBounds (10, 270, 180, 180);
-        frequencyKnobVoice2.setInterceptsMouseClicks (false, false);
-        addAndMakeVisible (frequencyKnobVoice2);
-        addAndMakeVisible(frequencyLabelVoice2);
-        frequencyLabelVoice2.setJustificationType (juce::Justification::centred);
-        frequencyLabelVoice2.setText ("Frequency V2", juce::dontSendNotification);
-        frequencyLabelVoice2.attachToComponent (&frequencyKnobVoice2, false);
-
-        // Define Amplitude Knob Voice 2
-        amplitudeKnobVoice2.setRange (0.0, 1.0);
-        amplitudeKnobVoice2.setSliderStyle (juce::Slider::RotaryVerticalDrag);
-        amplitudeKnobVoice2.setTextBoxStyle (juce::Slider::TextBoxBelow, true, 150, 25);
-        amplitudeKnobVoice2.setBounds (190, 270, 180, 180);
-        amplitudeKnobVoice2.setInterceptsMouseClicks (false, false);
-        addAndMakeVisible (amplitudeKnobVoice2);
-        addAndMakeVisible(amplitudeLabelVoice2);
-        amplitudeLabelVoice2.setJustificationType (juce::Justification::centred);
-        amplitudeLabelVoice2.setText ("Amplitude V2", juce::dontSendNotification);
-        amplitudeLabelVoice2.attachToComponent (&amplitudeKnobVoice2, false);
-        
-        // Define Timbre Knob Voice 2
-        timbreKnobVoice2.setRange (0.0, 1.0);
-        timbreKnobVoice2.setSliderStyle (juce::Slider::RotaryVerticalDrag);
-        timbreKnobVoice2.setTextBoxStyle (juce::Slider::TextBoxBelow, true, 150, 25);
-        timbreKnobVoice2.setBounds (380, 270, 180, 180);
-        timbreKnobVoice2.setInterceptsMouseClicks (false, false);
-        addAndMakeVisible (timbreKnobVoice2);
-        addAndMakeVisible(timbreLabelVoice2);
-        timbreLabelVoice2.setJustificationType (juce::Justification::centred);
-        timbreLabelVoice2.setText ("Timbre V2", juce::dontSendNotification);
-        timbreLabelVoice2.attachToComponent (&timbreKnobVoice2, false);
+        // Voic 2 Knobs
+        initializeKnob(frequencyKnobVoice2, frequencyLabelVoice2, "Frequency V2", 10, 270);
+        initializeKnob(amplitudeKnobVoice2, amplitudeLabelVoice2, "Amplitude V2", 190, 270);
+        initializeKnob(timbreKnobVoice2, timbreLabelVoice2, "Timbre V2", 380, 270);
 
         // Specify UDP port for OSC messages
-        if (! connect (9001))
-            showConnectionErrorMessage ("Error: could not connect to UDP port 9001.");
+        if (! connect (OSCPORT))
+            showConnectionErrorMessage("Error: could not connect to UDP port " + juce::String(OSCPORT) + ".");
  
         // Route to listen for OSC messages
-        addListener (this, "/juce/gestureData");
+        addListener (this, OSCROUTE);
         
         // Window Size
-        setSize (600, 485);
+        setSize (580, 480);
     }
 
     ~GestureSynthesizer() override
@@ -156,9 +100,13 @@ public:
         expectedSamplesPerBlock = samplesPerBlockExpected;
     }
 
-    /*  This method generates the actual audio samples.
-        In this example the buffer is filled with a sine wave whose frequency and
-        amplitude are controlled by the mouse position.
+    /*  Generates a block of audio samples which are placed into a buffer for immediate playback
+        Audio value is taken from current knob values, and two synthesizer voices are calculated
+        for x discrete values in time if the size of the block is x.
+     
+        Two voices are calculated, using current knob values for pitch, frequency, and timbre.
+        Timbre is a range between 0 and 1 where 0 is a pure sine wave, and 1 is a pure square wave.
+        Any value in between is a linear mix of the two.
      */
     void getNextAudioBlock(const AudioSourceChannelInfo& bufferToFill) override
     {
@@ -174,13 +122,16 @@ public:
         float currAmplitudeVoice2 = (float)amplitudeKnobVoice2.getValue() / 10.0;
         float magnitudeVoice2 = (float)timbreKnobVoice2.getValue() / 10.0;
 
+        // Calculate for both audio channels
         for (auto chan = 0; chan < bufferToFill.buffer->getNumChannels(); ++chan)
         {
             phaseVoice1 = originalPhaseVoice1;
             phaseVoice2 = originalPhaseVoice2;
             auto* channelData = bufferToFill.buffer->getWritePointer(chan, bufferToFill.startSample);
 
-            float phaseOffset = 0.1f; // To avoid possible wave cancellation
+            float phaseOffset = 0.1f; // To avoid possible wave cancellation add some small offset
+            
+            // Calculate for each sample in block then place in buffer
             for (auto i = 0; i < bufferToFill.numSamples; ++i)
             {
                 // Voice 1 Synthesizer
@@ -195,95 +146,179 @@ public:
 
                 // Additive synthesis: combine the two voices
                 channelData[i] = waveVoice1 + waveVoice2;
+                pushNextSampleIntoFifo (channelData[i]);
             }
         }
     }
 
     void releaseResources() override
     {
-        // This gets automatically called when audio device parameters change
-        // or device is restarted.
     }
 
 
     //==============================================================================
+    
+    // Initialize and draw spectrogram and background
     void paint (Graphics& g) override
     {
-//        // (Our component is opaque, so we must completely fill the background with a solid colour)
-//        g.fillAll (getLookAndFeel().findColour (ResizableWindow::backgroundColourId));
-//
-//        auto centreY = (float) getHeight() / 2.0f;
-//        auto radius = amplitude * 200.0f;
-//
-//        if (radius >= 0.0f)
-//        {
-//            // Draw an ellipse based on the mouse position and audio volume
-//            g.setColour (Colours::lightgreen);
-//
-//            g.fillEllipse (jmax (0.0f, lastMousePosition.x) - radius / 2.0f,
-//                           jmax (0.0f, lastMousePosition.y) - radius / 2.0f,
-//                           radius, radius);
-//        }
-//
-//        // Draw a representative sine wave.
-//        Path wavePath;
-//        wavePath.startNewSubPath (0, centreY);
-//
-//        for (auto x = 1.0f; x < (float) getWidth(); ++x)
-//            wavePath.lineTo (x, centreY + amplitude * (float) getHeight() * 2.0f
-//                                            * std::sin (x * frequency * 0.0001f));
-//
-//        g.setColour (getLookAndFeel().findColour (Slider::thumbColourId));
-//        g.strokePath (wavePath, PathStrokeType (2.0f));
+        g.fillAll (juce::Colours::black);
+        g.drawImageWithin(spectrogramImage, 0, 0, getWidth(), getHeight(), RectanglePlacement::fillDestination);
+        g.setOpacity (1.0f);
     }
 
-    void mouseDown (const MouseEvent& e) override
+    // Helper function to initialzize knobs.
+    // Creates knob, sets style to rotary, sizes knob, attaches a label, centeres text, and makes visible
+    // Currently set such that knobs are not controllable by mouse, but only by OSC messages
+    void initializeKnob(juce::Slider& knob, juce::Label& label, const String& labelText, int x, int y)
     {
-    }
+        // Define and initialize knob
+        knob.setRange(0.0, 1.0);
+        knob.setSliderStyle(juce::Slider::RotaryVerticalDrag);
+        knob.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 150, 25);
+        knob.setBounds(x, y, 180, 180);
+        knob.setInterceptsMouseClicks(false, false);
+        addAndMakeVisible(knob);
 
-    void mouseDrag (const MouseEvent& e) override
-    {
+        // Define and initialize label
+        label.setJustificationType(juce::Justification::centred);
+        label.setText(labelText, juce::dontSendNotification);
+        label.attachToComponent(&knob, false);
+        addAndMakeVisible(label);
     }
+    
 
-    void mouseUp (const MouseEvent&) override
-    {
-    }
-
+    // Allows for dynamic adjustement of UI if window is resized (currently empty)
     void resized() override
     {
-        // This is called when the component is resized.
-        // If you add any child components, this is where you should
-        // update their positions.
     }
 
+    // Every timestep in timer draw next line of spectrogram
+    // Implementation for spectrogram mostly comes from JUCE official tutorial on spectrograms
+    void timerCallback() override
+    {
+        if (nextFFTBlockReady)
+        {
+            drawNextLineOfSpectrogram();
+            nextFFTBlockReady = false;
+            repaint();
+        }
+    }
 
+    // Helper function for spectrogram.
+    // Implementation for spectrogram mostly comes from JUCE official tutorial on spectrograms
+    void pushNextSampleIntoFifo (float sample) noexcept
+    {
+        if (fifoIndex == fftSize)
+        {
+            if (! nextFFTBlockReady)
+            {
+                std::fill (fftData.begin(), fftData.end(), 0.0f);
+                std::copy (fifo.begin(), fifo.end(), fftData.begin());
+                nextFFTBlockReady = true;
+            }
+ 
+            fifoIndex = 0;
+        }
+ 
+        fifo[(size_t) fifoIndex++] = sample;
+    }
+    
+    // Draw spectrogram as background to entire synthesizer (one line at a time)
+    // Implementation for spectrogram mostly comes from JUCE official tutorial on spectrograms
+    // Modifications were made to adjust scaling, and fit for this apps purposes
+    void drawNextLineOfSpectrogram()
+    {
+        auto rightHandEdge = spectrogramImage.getWidth() - 1;
+        auto imageHeight   = spectrogramImage.getHeight();
+ 
+        // first, shuffle our image leftwards by 1 pixel..
+        spectrogramImage.moveImageSection (0, 0, 1, 0, rightHandEdge, imageHeight);
+ 
+        // then render our FFT data..
+        forwardFFT.performFrequencyOnlyForwardTransform (fftData.data());
+ 
+        // find the range of values produced, so we can scale our rendering to
+        // show up the detail clearly
+        auto maxLevel = juce::FloatVectorOperations::findMinAndMax (fftData.data(), fftSize / 2);
+ 
+        for (auto y = 1; y < imageHeight; ++y)
+        {
+            auto skewedProportionY = 1.0f - std::exp (std::log ((float) y / (float) imageHeight) * 0.07f);
+            auto fftDataIndex = (size_t) juce::jlimit (0, fftSize / 2, (int) (skewedProportionY * fftSize / 2));
+            auto level = juce::jmap (fftData[fftDataIndex], 0.0f, juce::jmax (maxLevel.getEnd(), 1e-5f), 0.0f, 1.0f);
+ 
+            spectrogramImage.setPixelAt (rightHandEdge, y, juce::Colour::fromHSV (level, 1.0f, level, 1.0f)); // [5]
+        }
+    }
+
+    // Spectrogram public data members
+    static constexpr auto fftOrder = 10;
+    static constexpr auto fftSize  = 1 << fftOrder;
 private:
     //==============================================================================
+    
+    // Define OSC port and route
+    const OSCAddress OSCROUTE = "/juce/gestureData";
+    const int OSCPORT = 9001;
+    
+    // Define spectrogram private data members
+    juce::Image spectrogramImage;
+    juce::dsp::FFT forwardFFT;
+    std::array<float, fftSize> fifo;
+    std::array<float, fftSize * 2> fftData;
+    int fifoIndex = 0;
+    bool nextFFTBlockReady = false;
+    
+    // Voice 1 values
     float phaseVoice1       = 0.0f;
     float phaseDeltaVoice1  = 0.0f;
     float frequencyVoice1   = 5000.0f;
     float amplitudeVoice1   = 0.2f;
     float octaveMultiplierVoice1 = 1.0f;
     
+    // Voice 2 values
     float phaseVoice2       = 0.0f;
     float phaseDeltaVoice2  = 0.0f;
     float frequencyVoice2   = 5000.0f;
     float amplitudeVoice2   = 0.2f;
     float octaveMultiplierVoice2 = 1.0f;
-//    float octave_multiplier_min = 1.0f;
-//    float octave_multiplier_max = 8.0f;
-
+    
+    // Voice 1 UI Components
+    juce::Slider frequencyKnobVoice1;
+    juce::Slider amplitudeKnobVoice1;
+    juce::Slider timbreKnobVoice1;
+    juce::Label frequencyLabelVoice1;
+    juce::Label amplitudeLabelVoice1;
+    juce::Label timbreLabelVoice1;
+    
+    // Voice 2 UI Components
+    juce::Slider frequencyKnobVoice2;
+    juce::Slider amplitudeKnobVoice2;
+    juce::Slider timbreKnobVoice2;
+    juce::Label frequencyLabelVoice2;
+    juce::Label amplitudeLabelVoice2;
+    juce::Label timbreLabelVoice2;
+    
     double sampleRate = 0.0;
     int expectedSamplesPerBlock = 0;
     Point<float> lastMousePosition;
 
+    // Function triggered whenever an OSC message is received on defined OSCROUTE and OSCPORT.
+    // Acts as a server listeing to messages.
+    // Expects 8 OSC messages in an array in following format:
+    // int, int, float, float, float, float, float, float
+    // The first two ints correspond to each voices octave as an int (1,2,3,4) respectively
+    // The first three floats correspond to one voices values (frequency, magnitude, timbre)
+    // Float values are expected to be between 0.0 and 1.0. Values are scaled / normalized after receiving them.
     void oscMessageReceived(const juce::OSCMessage& message) override
     {
+        // Message is in correct format
         if (message.size() == 8 &&
             message[0].isInt32() && message[1].isInt32() &&
             message[2].isFloat32() && message[3].isFloat32() && message[4].isFloat32() &&
             message[5].isFloat32() && message[6].isFloat32() && message[7].isFloat32())
         {
+            // Set octave multiplier
             octaveMultiplierVoice1 = static_cast<float>(message[0].getInt32());
             octaveMultiplierVoice2 = static_cast<float>(message[1].getInt32());
             
@@ -305,6 +340,8 @@ private:
             amplitudeKnobVoice2.setValue(juce::jlimit(0.0f, 10.0f, magnitude2));
             timbreKnobVoice2.setValue(juce::jlimit(0.0f, 10.0f, message[7].getFloat32()));
             int regions = 8;
+            
+            // Define Frequency Range
             float frequencies[]{440.00, 493.88, 554.37, 587.33, 659.25, 739.99, 830.61, 880.00};
 
             // Get frequency index Voice 1 and calculate phase delta
@@ -323,6 +360,7 @@ private:
         }
     }
 
+    // OSC Connection Error Alert Message (From JUCE example on OSC)
     void showConnectionErrorMessage (const juce::String& messageText)
     {
         juce::AlertWindow::showMessageBoxAsync (juce::AlertWindow::WarningIcon,
@@ -331,20 +369,9 @@ private:
                                                 "OK");
     }
     
-    // voice 1
-    juce::Slider frequencyKnobVoice1;
-    juce::Slider amplitudeKnobVoice1;
-    juce::Slider timbreKnobVoice1;
-    juce::Label frequencyLabelVoice1;
-    juce::Label amplitudeLabelVoice1;
-    juce::Label timbreLabelVoice1;
+
     
-    // voice2
-    juce::Slider frequencyKnobVoice2;
-    juce::Slider amplitudeKnobVoice2;
-    juce::Slider timbreKnobVoice2;
-    juce::Label frequencyLabelVoice2;
-    juce::Label amplitudeLabelVoice2;
-    juce::Label timbreLabelVoice2;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GestureSynthesizer)
+    
 };

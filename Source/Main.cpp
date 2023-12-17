@@ -1,11 +1,14 @@
-/*
-  ==============================================================================
-
-    This file contains the startup code for a PIP.
-
-  ==============================================================================
-*/
-
+// Project: Gesture based audio synthesizer
+// Class: Computer Vision
+// Professor: Iannos Stamos
+// Group Members: Fourcan Abdullah, Anthony F Williams, Jeffry Hsu, Charles Richards
+// Date: December 17th, 2023
+//
+// Juce based audio synthesizer that receives gesture data through OSC protocol.
+// Implements two synthesizers which can vary in frequency, pitch, and timbre
+// OSC Data selects frequency, pitch, and timbre. Sound is generated continuously based on these parameters
+//
+// Main entry of app is in GestureSynthesizer.h
 #include <JuceHeader.h>
 #include "GestureSynthesizer.h"
 
