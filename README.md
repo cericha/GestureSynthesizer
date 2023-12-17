@@ -94,7 +94,10 @@ The X and Y coordinates of the wrist landmark, relative to the input image size,
 
 ## Challenges
 
-We experimented with two different approaches to gesture recognition, initially exploring a system that required training a model to recognize various finger articulations and hand placements. However, it became apparent that obtaining sufficient data for adequate model training would be challenging. We opted for an alternative implementation, integrating Google's Mediapipe model for hand landmark detection. This approach provided us with x, y coordinates, which would supply data to our synthesizer.
+We experimented with two different approaches to gesture recognition, initially exploring a system that required training a model to recognize various finger articulations and hand placements. However, it became apparent that obtaining sufficient data for adequate model training would be challenging. You can view that version here:
+https://github.com/anthonyfwill/sound-by-hand-gestures
+
+We opted for an alternative implementation, integrating Google's Mediapipe model for hand landmark detection. This approach provided us with x, y coordinates, which would supply data to our synthesizer.
 
 Addressing technical challenges, we had to establish a connection between our Python-based gesture recognition program and the C++ program responsible for sound generation. To overcome this, we identified an open-source audio library enabling the creation of a local server to transmit data to our synthesizer client. We also encountered issues with compiling programs on different computers due to differing IDE versions.
 
