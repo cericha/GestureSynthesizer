@@ -1,6 +1,6 @@
 # Harmony In Motion: Collaborative Gesture-Based Sounds
 
-Harmony In Motion is a gesture-controlled MIDI synthesizer with spectrogram that transforms hand movements captured by your computer webcam into musical expressions. Unlike traditional MIDI controllers, HarMo offers an intuitive and immersive musical experience by allowing users to control pitch, volume, and sound brightness through simple hand gestures.
+Harmony In Motion is a gesture-controlled MIDI synthesizer with spectrogram that transforms hand movements captured by your computer webcam into musical expressions. Unlike traditional MIDI controllers, Harmony In Motion offers an intuitive and immersive musical experience by allowing users to control pitch, volume, and sound brightness through simple hand gestures.
 
 - [Harmony In Motion: Collaborative Gesture-Based Sounds](#harmony-in-motion-collaborative-gesture-based-sounds)
   - [Required Packages](#required-packages)
@@ -102,7 +102,9 @@ We opted for an alternative implementation, integrating Google's Mediapipe model
 Addressing technical challenges, we had to establish a connection between our Python-based gesture recognition program and the C++ program responsible for sound generation. To overcome this, we identified an open-source audio library enabling the creation of a local server to transmit data to our synthesizer client. We also encountered issues with compiling programs on different computers due to differing IDE versions.
 
 ## Known Issues
+
 We noticed that the system sometimes confuses which hand is controlling which "voice" when two hands cross over or when hands leave the frame. We will implement a more advanced method of passing data from the gesture control system to the synthesizer in future versions to mitigate this problem.
 
 ## Additional Resources
+
 Project Presentation: https://docs.google.com/presentation/d/11XkNUgmywfcmgPJH0sGzcOiOLrgdc08dL8EQ5NtDJRU/edit#slide=id.g1f87997393_0_782
