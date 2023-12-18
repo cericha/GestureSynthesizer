@@ -23,7 +23,7 @@ Harmony In Motion is a gesture-controlled MIDI synthesizer with spectrogram that
 
 Python, OpenCV, MediaPipe, Python OSC
 
-- the 'hand_landmarker.task' model must be installed in the same directory as 'hand2.py'
+- the 'hand_landmarker.task' model must be installed in the same directory as 'GestureTracker.py'
 
 ## Launching the Program
 
@@ -39,10 +39,11 @@ The JUCE program must be compiled in Xcode for Mac and Visual Studio for Windows
 6. Open GestureSynthesizer.jucer to open the project in Projucer
 7. There is a button on the top right of Projucer that will open the project in your native IDE.
    For reference https://docs.juce.com/master/tutorial_new_projucer_project.html
+8. To test the program, run 'python run.py' located in the GestureTracker directory to ensure the synthesizer can properly receive audio data.
 
 ### Python Gesture Contol
 
-1. Launch the gesture control portion of the program with 'python hand2.py' in the terminal.
+1. Launch the gesture control portion of the program located in the GestureTracker directory with 'GestureTracker.py' in the terminal.
 2. Begin gesturing to play the instrument.
 
 ## Gestures
