@@ -1,0 +1,11 @@
+Gradescope seems to be unpacking zips into individual files, so just in case
+links are also added in case they are useful/helpful:
+
+Main Work:
+https://github.com/cericha/GestureSynthesizer/tree/main
+
+Presentation Slides:
+https://docs.google.com/presentation/d/11XkNUgmywfcmgPJH0sGzcOiOLrgdc08dL8EQ5NtDJRU/edit#slide=id.g1f87997393_0_782
+
+Initial attempt using different method: (See Main Work for our working implementation)
+https://github.com/anthonyfwill/sound-by-hand-gestures
